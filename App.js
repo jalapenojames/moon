@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 
-import React, {Component, useRef, useState, useEffect} from 'react';
+import React, {Component, useRef, useState, useEffect, useCallback} from 'react';
 import {LogBox, Animated, AppRegistry, Button, TouchableOpacity, StyleSheet, Text, View, Dimensions} from 'react-native';
+import _, { debounce } from 'lodash';
 const {height,width} = Dimensions.get("screen")
 const topRandom = Array(100).fill().map(e => Math.random()*height)
 const leftRandom = Array(100).fill().map(e => Math.random()*width)
@@ -17,6 +18,7 @@ export default function App(){
 	const fadeAnim = useRef(new Animated.Value(0)).current
 
   const animate = () => {
+	console.log('...animating')
 	Animated.sequence([
 		spinClockwise(),
 		spinCounter()
@@ -51,8 +53,11 @@ export default function App(){
 		<View style={{position: 'absolute', height: width/3/5, width: width/3/5, borderRadius: width, backgroundColor: 'skyblue'}}/>
 	</Animated.View>
   
+	const performAnimation = useCallback(debounce(animate,6000,{leading: true, trailing: false}))
+
 	const handlePress = () => {
-		animate()
+		performAnimation()
+		// animate()
 		// if(toggle) {
 			// spinClockwise()
 		// 	setToggle(!toggle)
