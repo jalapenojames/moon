@@ -45,6 +45,11 @@ export default function App(){
 		inputRange: [0, 1],
 		outputRange: ['0deg', '360deg']
 	})
+
+	const zoom = fadeAnim.interpolate({
+		inputRange: [0,1],
+		outputRange: [1,50]
+	})
   
 	const Moon = () => <TouchableOpacity onPress={handlePress} style={styles.asteroidButton}></TouchableOpacity>
   
@@ -57,22 +62,13 @@ export default function App(){
 
 	const handlePress = () => {
 		performAnimation()
-		// animate()
-		// if(toggle) {
-			// spinClockwise()
-		// 	setToggle(!toggle)
-		// }
-		// else {
-		// 	spinCounter()
-		// 	setToggle(!toggle)
-		// }
 	}
 
 	const StarField = () => {
 		const numOfStars = 100
 		const zeroto1 = Math.random()
 	
-		const Star = ({top, left, size}) => <View style={{top: top, left: left, position: 'absolute', height: height/3/10/2/2*size, width: height/3/10/2/2*size, borderRadius: 0, backgroundColor: 'white'}}/>
+		const Star = ({top, left, size}) => <Animated.View style={{transform: [{rotate: spin}, {translateX: zoom}, {translateY: zoom}], top: top, left: left, position: 'absolute', height: height/3/10/2/2*size, width: height/3/10/2/2*size, borderRadius: 0, backgroundColor: 'white'}}/>
 	
 		return <View style={[styles.container, {color: 'red'}]}>
 			{
